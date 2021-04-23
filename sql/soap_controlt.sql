@@ -7,7 +7,7 @@ ALTER TABLE gps ADD COLUMN imei varchar(20);
 
 CREATE TABLE IF NOT EXISTS soap_controlt (
   id serial PRIMARY KEY,
-  vehicle_id INT NOT NULL,
+  vehicle_id INT UNIQUE NOT NULL,
   last_position_gps_id INT NOT NULL,
   created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_delivery TIMESTAMP,

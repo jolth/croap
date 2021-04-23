@@ -16,20 +16,22 @@
 # 
 # NOTE: the file must not have a title
 #
-DBNAME=""
-TABLE=""
-KEYTOSEARCH=""
-DBPASSWORD="m|m"
+DBNAME="rastree"
+INSERTTABLE="soap_controlt"
+KEYTOSEARCH="placa"
+DBPASSWORD="qwerty"
 
 # searh a them for plate
 search_vehicle() {
   local plate=$1
+  PGPASSWORD=$DBPASSWORD psql -d $DBNAME -w -c "INSERT INTO $INSERTTABLE (vehicle_id, last_position_gps_id) 
+  SELECT v.id, lpg.id FROM vehiculos AS v LEFT JOIN last_positions_gps AS lpg ON (v.gps_id=lpg.gps_id) WHERE $KEYTOSEARCH=lower('$plate')"
 }
 
 main() {
   while read line; do
-    #echo $line
-    PGPASSWORD=$DBPASSWORD psql -d $DBNAME -w -c "SELECT * FROM $TABLE WHERE $KEYTOSEARCH=lower('$line')"
+    echo -n "$line -> "
+    search_vehicle $line
   done < $1
 }
 

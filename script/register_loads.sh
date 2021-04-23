@@ -15,14 +15,14 @@
 # NOTE: the file must not have a title
 #
 
-DBNAME=""
-TABLE=""
-KEYTOSEARCH=""
-COLUMNTOINSERT=""
-DBPASSWORD="m|m"
+DBNAME="rastree"
+TABLE="gps"
+KEYTOSEARCH="name"
+COLUMNTOINSERT="imei"
+DBPASSWORD="qwerty"
 
-function insert_record {
-  local items=$1
+insert_record() {
+  items=$1
   
   PGPASSWORD=$DBPASSWORD psql -d $DBNAME -w -c "UPDATE $TABLE SET $COLUMNTOINSERT=${items[1]} WHERE $KEYTOSEARCH='${items[0]}'"
   PGPASSWORD=$DBPASSWORD psql -d $DBNAME -w -c "SELECT * FROM $TABLE WHERE $KEYTOSEARCH='${items[0]}'"

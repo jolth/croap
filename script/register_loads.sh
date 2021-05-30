@@ -15,11 +15,11 @@
 # NOTE: the file must not have a title
 #
 
-DBNAME="rastree"
+DBNAME=""
 TABLE="gps"
 KEYTOSEARCH="name"
 COLUMNTOINSERT="imei"
-DBPASSWORD="qwerty"
+DBPASSWORD="m|m"
 
 insert_record() {
   items=$1

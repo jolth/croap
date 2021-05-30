@@ -16,10 +16,10 @@
 # 
 # NOTE: the file must not have a title
 #
-DBNAME="rastree"
+DBNAME=""
 INSERTTABLE="soap_controlt"
 KEYTOSEARCH="placa"
-DBPASSWORD="qwerty"
+DBPASSWORD="m|m"
 
 # searh a them for plate
 search_vehicle() {

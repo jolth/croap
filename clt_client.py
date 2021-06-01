@@ -1,15 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""SOAP ControlT
+"""SOAP ControlT Client
 By: Jorge Toro 
     <jorge.toro at devmicrosystems dot com>
     <jolth at gmail dot com>
 
 Copyright May 2021
 """
-#from contextlib import closing
 from db import vehicles_fetchall
-#from psycopg2.extras import RealDictCursor
 
 
 class ControlT:
@@ -17,49 +15,80 @@ class ControlT:
                  velocidad, odometer, position, altura, grados, ubicacion,
                  codigo, descrip, motor, late_payment, drop): 
         self.plate = placa
+        self.serial = gps_name if imei is None else imei
+        self.dateeventgps, self.houreventgps = self.__datetime(fechahora)
+        self.dateeventavl, self.houreventavl = self.__datetime(fechahora)
+        self.status = 1 # reliable GPS position, yes=1 
+        self.code_event = 5 if codigo is None else codigo
+        self.event_message = 'Reporte Periodico' if descrip is None else descrip
+        self.priority = 5 if self.code_event == 1 else 0 
+        self.velocity = int(velocidad)
+        #self.odometer = float(odometer.replace(',',''))  if odometer is not None else 0
+        self.odometer = 0
+        self.latitude, self.longitude = self.__latlong(position)
+        self.ignition = motor
+        self.battery = 50 # 0 - 100
+        self.altitude = altura if altura != None else 0.0
+        self.course = self.__courses(grados) 
+        self.movil = ''
+        self.temperature1 = 0
+        self.temperature2 = 0
 
     def __str__(self):
-        return '%s' % self.plate
+        return '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' % (
+          self.plate, self.serial, self.dateeventgps, self.houreventgps,
+          self.code_event, self.event_message, self.priority, self.velocity, 
+          self.odometer, self.longitude, self.latitude, self.ignition,self.battery, 
+          self.altitude, self.course)
 
     def __dir__(self):
         return ['parse']
 
+    def __datetime(self, dt):
+        return dt.strftime('%m/%d/%Y'), dt.strftime('%H:%M:%S')
+
+    def __latlong(self, position):
+        s = position[1:-1]
+        lat, long = s.split(',')
+        return (float(lat), float(long))
+
+    def __courses(self, grados):
+        if grados is None:
+            return str(grados)
+
+        if grados == 0:
+            return 'Norte'
+        elif grados == 90:
+            return 'oriente'
+        elif grados == 180:
+            return 'sur'
+        elif grados == 270:
+            return 'occidente'
+        elif 360 > grados > 270:
+            return 'nor-occidente'
+        elif 270 > grados > 180:
+            return 'sur-occidente'
+        elif 180 > grados > 90:
+            return 'sur-oriente'
+        elif 90 > grados > 0:
+            return 'nor-oriente'
+
     def parse(self):
         """return analized"""
-        return (self.placa,)
-
-
-#def vehicles_fetchall(ws_name):
-#    """Lookup all vehicle data for a service.
-#    ws_name = is the web service name
-#    """
-#    select_query = """SELECT ss.name AS soap_server,
-#    v.placa, v.gps_id, g.imei, g.name AS gps_name,
-#    lpg.fecha AS fechahora, lpg.velocidad, lpg.odometer, lpg.position, 
-#    lpg.altura, lpg.grados, lpg.ubicacion,
-#    te.codigo, te.descrip, vst.motor, 
-#    v.active AS late_payment, g.active AS drop
-#    FROM vehicle_soap AS vs
-#    LEFT JOIN vehiculos AS v ON (v.id=vs.vehicle_id)
-#    LEFT JOIN gps AS g ON (v.gps_id=g.id)
-#    LEFT JOIN last_positions_gps AS lpg ON (g.id=lpg.gps_id)
-#    LEFT JOIN eventos AS e ON (lpg.id=e.positions_gps_id)
-#    LEFT JOIN type_event AS te ON (e.type=te.codigo)
-#    LEFT JOIN vehicle_state AS vst ON (v.id=vst.vehicle_id)
-#    LEFT JOIN soap_server AS ss ON (ss.id=vs.soap_server)
-#    WHERE ss.name = %s"""
-
-#    with connect(credentials) as conn:
-#        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-#            cur.execute(select_query, (ws_name,))
-#            return cur.fetchall()
+        return (self.plate, self.serial, self.dateeventgps, self.houreventgps, 
+                self.dateeventavl, self.houreventavl, self.status, self.code_event,
+                self.event_message, self.priority, self.velocity, self.odometer,
+                self.longitude, self.latitude, self.ignition, self.battery,
+                self.altitude, self.course, self.movil, self.temperature1,
+                self.temperature2)
 
 
 if __name__ == '__main__':
     vehicles = vehicles_fetchall('controlt')
     print(vehicles)
-    print(vehicles[0])
+    #print(vehicles[0])
     
     objs = map(lambda record: ControlT(**record), vehicles)
     for o in objs:
         print(o)
+        print(list(o.parse()))

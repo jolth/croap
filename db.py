@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""By: Jolth <jolthgs at gmail dot com>
+"""
 import psycopg2
 from contextlib import closing
 from psycopg2 import Error

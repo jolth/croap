@@ -52,7 +52,7 @@ def vehicles_fetchall(ws_name):
     LEFT JOIN type_event AS te ON (e.type=te.codigo)
     LEFT JOIN vehicle_state AS vst ON (v.id=vst.vehicle_id)
     LEFT JOIN soap_server AS ss ON (ss.id=vs.soap_server)
-    WHERE ss.name = %s"""
+    WHERE v.active='t' AND ss.name = %s"""
 
     with connect(credentials) as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:

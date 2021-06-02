@@ -20,13 +20,14 @@ class ControlT:
         self.serial = gps_name if imei is None else imei
         self.dateeventgps, self.houreventgps = self.__datetime(fechahora)
         self.dateeventavl, self.houreventavl = self.__datetime(fechahora)
-        self.status = 1 # reliable GPS position, yes=1 
-        self.code_event = 5 if codigo is None else codigo
+        self.status = True # reliable GPS position, yes=1
+        #self.status = 1 # reliable GPS position, yes=1
+        self.code_event = '5' if codigo is None else str(codigo)
         self.event_message = 'Reporte Periodico' if descrip is None else descrip
         self.priority = 5 if self.code_event == 1 else 0 
         self.velocity = int(velocidad)
         #self.odometer = float(odometer.replace(',',''))  if odometer is not None else 0
-        self.odometer = 0
+        self.odometer = 0.0
         self.ignition = motor
         self.battery = 50 # 0 - 100
         self.altitude = altura if altura != None else 0.0

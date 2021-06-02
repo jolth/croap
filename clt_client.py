@@ -83,12 +83,13 @@ class ControlT:
                 self.temperature2)
 
 
+def factory(vehicles):
+    return  map(lambda record: ControlT(**record), vehicles)
+
+
 if __name__ == '__main__':
     vehicles = vehicles_fetchall('controlt')
-    print(vehicles)
-    #print(vehicles[0])
     
-    objs = map(lambda record: ControlT(**record), vehicles)
-    for o in objs:
+    for o in factory(vehicles):
         print(o)
         print(list(o.parse()))

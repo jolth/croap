@@ -80,7 +80,6 @@ class ControlT:
         #r = requests.get('http://127.0.0.1:8181/nominatim/reverse.php?')
         r = requests.get('https://nominatim.openstreetmap.org/reverse?', params=params)
         address = r.json()['address']
-        print(address)
          
         if 'county' in address: city = address['county']
         elif 'town' in address: city = address['town']
@@ -91,7 +90,6 @@ class ControlT:
         
         return (stree, city, state)
 
-
     def parse(self):
         """return analized"""
         return (self.plate, self.serial, self.dateeventgps, self.houreventgps, 
@@ -99,7 +97,7 @@ class ControlT:
                 self.event_message, self.priority, self.velocity, self.odometer,
                 self.longitude, self.latitude, self.ignition, self.battery,
                 self.altitude, self.course, self.movil, self.temperature1,
-                self.temperature2)
+                self.temperature2, self.address, self.city, self.department)
 
 
 def factory(vehicles):

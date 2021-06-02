@@ -1,0 +1,11 @@
+
+## UPDATE THE DATABASE
+psql -d rastree sql/update.sql
+
+## INSERT imeis OF AVLs
+bash script/register_loads.sh sensitive/imei_to_insert.csv
+
+## INSERT vehicles in vehicle_soap TABLE
+
+## Nominatim
+Change for the local nominatim

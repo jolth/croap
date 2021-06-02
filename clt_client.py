@@ -21,7 +21,6 @@ class ControlT:
         self.dateeventgps, self.houreventgps = self.__datetime(fechahora)
         self.dateeventavl, self.houreventavl = self.__datetime(fechahora)
         self.status = True # reliable GPS position, yes=1
-        #self.status = 1 # reliable GPS position, yes=1
         self.code_event = '5' if codigo is None else str(codigo)
         self.event_message = 'Reporte Periodico' if descrip is None else descrip
         self.priority = 5 if self.code_event == 1 else 0 
@@ -39,7 +38,7 @@ class ControlT:
             self.latitude, self.longitude = self.__latlong(position)
             self.address, self.city, self.department = self.__reverse_geocoding(self.latitude, self.longitude)
         else:
-            self.latitude, self.longitude = 0.0, 0.0 
+            self.latitude, self.longitude = -2.728822, 1.981992
             self.address, self.city, self.department = ('SERVICIO EN MORA',) * 3
 
 

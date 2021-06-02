@@ -8,6 +8,7 @@ By: Jorge Toro
 Copyright May 2021
 """
 from db import vehicles_fetchall
+import requests
 
 
 class ControlT:
@@ -33,13 +34,14 @@ class ControlT:
         self.movil = ''
         self.temperature1 = 0
         self.temperature2 = 0
+        self.address, self.city, self.department = self.__reverse_geocoding(self.latitude, self.longitude)
 
     def __str__(self):
-        return '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' % (
+        return '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' % (
           self.plate, self.serial, self.dateeventgps, self.houreventgps,
           self.code_event, self.event_message, self.priority, self.velocity, 
           self.odometer, self.longitude, self.latitude, self.ignition,self.battery, 
-          self.altitude, self.course)
+          self.altitude, self.course, self.address, self.city, self.department)
 
     def __dir__(self):
         return ['parse']
@@ -72,6 +74,23 @@ class ControlT:
             return 'sur-oriente'
         elif 90 > grados > 0:
             return 'nor-oriente'
+
+    def __reverse_geocoding(self, lat, lon):
+        params = {'format': 'jsonv2', 'lat': lat, 'lon': lon}
+        #r = requests.get('http://127.0.0.1:8181/nominatim/reverse.php?')
+        r = requests.get('https://nominatim.openstreetmap.org/reverse?', params=params)
+        address = r.json()['address']
+        print(address)
+         
+        if 'county' in address: city = address['county']
+        elif 'town' in address: city = address['town']
+        else: 
+            city = address['city']
+        state = address.get('state', None)
+        stree = address.get('road', None)
+        
+        return (stree, city, state)
+
 
     def parse(self):
         """return analized"""

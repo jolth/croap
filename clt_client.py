@@ -15,6 +15,7 @@ class ControlT:
     def __init__(self, soap_server, placa, gps_id, imei, gps_name, fechahora,
                  velocidad, odometer, position, altura, grados, ubicacion,
                  codigo, descrip, motor, late_payment, drop): 
+        self.late_payment = late_payment
         self.plate = placa
         self.serial = gps_name if imei is None else imei
         self.dateeventgps, self.houreventgps = self.__datetime(fechahora)
@@ -26,7 +27,6 @@ class ControlT:
         self.velocity = int(velocidad)
         #self.odometer = float(odometer.replace(',',''))  if odometer is not None else 0
         self.odometer = 0
-        self.latitude, self.longitude = self.__latlong(position)
         self.ignition = motor
         self.battery = 50 # 0 - 100
         self.altitude = altura if altura != None else 0.0
@@ -34,7 +34,14 @@ class ControlT:
         self.movil = ''
         self.temperature1 = 0
         self.temperature2 = 0
-        self.address, self.city, self.department = self.__reverse_geocoding(self.latitude, self.longitude)
+        if late_payment is True:
+            self.latitude, self.longitude = self.__latlong(position)
+            self.address, self.city, self.department = self.__reverse_geocoding(self.latitude, self.longitude)
+        else:
+            self.latitude, self.longitude = 0.0, 0.0 
+            self.address, self.city, self.department = ('SERVICIO EN MORA',) * 3
+
+
 
     def __str__(self):
         return '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' % (

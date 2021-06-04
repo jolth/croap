@@ -16,7 +16,7 @@ class ControlT:
                  velocidad, odometer, position, altura, grados, ubicacion,
                  codigo, descrip, motor, late_payment, drop, lpg_id): 
         self.late_payment = late_payment
-        self.plate = placa
+        self.plate = placa.upper()
         self.serial = gps_name if imei is None else imei
         self.dateeventgps, self.houreventgps = self.__datetime(fechahora)
         self.dateeventavl, self.houreventavl = self.__datetime(fechahora)

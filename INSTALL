@@ -1,6 +1,6 @@
 
 ## UPDATE THE DATABASE
-psql -d rastree sql/update.sql
+psql -d rastree < sql/update.sql
 
 ## INSERT imeis OF AVLs
 bash script/register_loads.sh sensitive/imei_to_insert.csv
@@ -10,3 +10,14 @@ bash script/insert_vehicle_soap.sh placas_ratree_controlt.txt
 
 ## Reverse geocoding
 Change for the local
+
+## Clone repo
+
+git clone https://github.com/jolth/croap.git
+cd croap/
+
+## Create a virtual environment
+python3.9 -m venv env
+
+and activate the virtual environment
+source env/bin/activate

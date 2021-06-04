@@ -6,6 +6,7 @@ psql -d rastree sql/update.sql
 bash script/register_loads.sh sensitive/imei_to_insert.csv
 
 ## INSERT vehicles in vehicle_soap TABLE
+bash script/insert_vehicle_soap.sh placas_ratree_controlt.txt
 
-## Nominatim
-Change for the local nominatim
+## Reverse geocoding
+Change for the local

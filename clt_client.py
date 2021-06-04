@@ -7,14 +7,14 @@ By: Jorge Toro
 
 Copyright May 2021
 """
-from db import vehicles_fetchall
+from db import vehicles_fetchall, update_vehicle_soap
 import requests
 
 
 class ControlT:
     def __init__(self, soap_server, placa, gps_id, imei, gps_name, fechahora,
                  velocidad, odometer, position, altura, grados, ubicacion,
-                 codigo, descrip, motor, late_payment, drop): 
+                 codigo, descrip, motor, late_payment, drop, lpg_id): 
         self.late_payment = late_payment
         self.plate = placa
         self.serial = gps_name if imei is None else imei
@@ -41,7 +41,7 @@ class ControlT:
             self.latitude, self.longitude = -2.728822, 1.981992
             self.address, self.city, self.department = ('SERVICIO EN MORA',) * 3
 
-
+        update_vehicle_soap(gps_id, lpg_id, fechahora)
 
     def __str__(self):
         return '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' % (

@@ -31,7 +31,7 @@ search_vehicle() {
   SELECT v.id, lpg.id, v.gps_id, ss.id, lpg.fecha
   FROM vehiculos AS v
   LEFT JOIN last_positions_gps AS lpg ON (v.gps_id=lpg.gps_id)
-  LEFT JOIN soap_server AS ss ON (ss.name=$SOAPSNAME) -- ---> OJO: poner el nombre del service
+  LEFT JOIN soap_server AS ss ON (ss.name='$SOAPSNAME') -- ---> OJO: poner el nombre del service
   WHERE $KEYTOSEARCH=lower('$plate');"
 }
 

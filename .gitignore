@@ -1,3 +1,9 @@
 pyenv3
 __pycache__
 env
+test*
+*old
+inspect_wsdl_file
+login.py
+sensitive/
+step

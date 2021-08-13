@@ -91,15 +91,11 @@ class ControlT:
         if 'county' in address: city = address['county']
         elif 'town' in address: city = address['town']
         else: 
-            try:
-                city = address.get('city', None)
-            except e:
-                print('Error', e)
-                print('Address:', address)
+            city = address.get('city', None)
 
         state = address.get('state', None)
         stree = address.get('road', None)
-        
+
         return (stree, city, state)
 
     def parse(self):
